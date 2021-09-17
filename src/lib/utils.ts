@@ -129,26 +129,7 @@ export function loadAWSCredentials(path:string, profileName:string = 'default') 
     }
 };
 
-export function waitForNodeJS(cb){
-    /* Waits for all Timeouts to end before calling the callback */
-    // This is quite ugly, but its hard to emulate a "wait for all timeouts" properly :/
-    const Timer_constructor = (process as any).binding('timer_wrap').Timer;
-    var i=0, has_timers=false;
-    (process as any)._getActiveHandles().every(function(x){
-        if (x.constructor == Timer_constructor){
-            if (++i > 1){ 
-                has_timers = true;
-                return false;
-            }
-        }
-        return true;
-    });
-    if (has_timers){
-        setTimeout(function(){
-            waitForNodeJS(cb);
-        }, 100);
-    } else {
-        cb();
-    }
+export function waitForNodeJS(cb) {
+  setTimeout(cb, 4e3);
 }
 
